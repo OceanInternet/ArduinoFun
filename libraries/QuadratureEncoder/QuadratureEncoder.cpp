@@ -3,16 +3,12 @@
 void QuadratureEncoder::update(int newState) {
     
     // direction
-    
-    int newFirstBit  = bitRead(newState,    0);
-    int newSecondBit = bitRead(newState,    1);
-    int prevFirstBit = bitRead(this->state, 0);
-    
-    if (newFirstBit == 0 && prevFirstBit == 1) { // zero transition on first bit
+    if (bitRead(newState, 0) == 0 && bitRead(this->state, 0) == 1) { // zero transition on first bit
         
-        this->direction = newSecondBit;
+        this->direction = bitRead(newState, 1);
     }
     
+    // speed
     if(direction == FWD) {
         
         this->clicks++;
