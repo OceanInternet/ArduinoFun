@@ -4,3 +4,6 @@
 [submodule "libraries/IRLib"]
 	path = libraries/IRLib
 	url = git@github.com:cyborg5/IRLib.git
+[submodule "libraries/NewPing"]
+	path = libraries/NewPing
+	url = git@github.com:PaulStoffregen/NewPing.git
