@@ -19,16 +19,16 @@
 #define REV 1
 #endif
 
-class QuadratureEncoder
-{
+class QuadratureEncoder {
 protected:
-    int            state     = 0;
-    unsigned long  millis    = 0;
-    int            clicks    = 0;
-    bool           direction = 0;
-    
+    int state = 0;
+    unsigned long millis = 0;
+    int clicks = 0;
+    bool direction = 0;
+
 public:
     QuadratureEncoder();
+
     void update(int newState);
 };
 

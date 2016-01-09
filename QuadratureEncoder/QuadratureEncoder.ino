@@ -4,12 +4,11 @@
 
 QuadratureEncoder encoder();
 
-void setup()
-{
-  InitialiseIO();
-  InitialiseInterrupt();
-  Serial.begin(9600);
-  Serial.println("Initialised...");
+void setup() {
+    InitialiseIO();
+    InitialiseInterrupt();
+    Serial.begin(9600);
+    Serial.println("Initialised...");
 }
 
 void loop() {
@@ -22,16 +21,16 @@ void loop() {
 //  Serial.println(motorSpeed);
 //  encoderClicks = 0;
 //  encoderMillis = currentMillis;
-  delay(100);
+    delay(100);
 }
 
 void InitialiseIO() {
 
-  // Initialise A0-A1 as input
-  for (int i = A0; i < A2; i++) {
-    pinMode(i, INPUT);     // Pin i is input
-    digitalWrite(i, HIGH); // Configure internal pull-up resistor
-  }
+    // Initialise A0-A1 as input
+    for (int i = A0; i < A2; i++) {
+        pinMode(i, INPUT);     // Pin i is input
+        digitalWrite(i, HIGH); // Configure internal pull-up resistor
+    }
 
 //  // Initialise encoderMillis
 //  encoderMillis = millis();
@@ -39,15 +38,15 @@ void InitialiseIO() {
 
 void InitialiseInterrupt() {
 
-  noInterrupts();       // switch interrupts off while messing with their settings
-  PCICR  |= 0b00000010; // Turn on Pin Change Interrupts (turn on port c)
-  PCMSK1 |= 0b00000011; // Choose Which Pins to Interrupt (A0, A1)
-  interrupts();         // turn interrupts back on
+    noInterrupts();       // switch interrupts off while messing with their settings
+    PCICR |= 0b00000010; // Turn on Pin Change Interrupts (turn on port c)
+    PCMSK1 |= 0b00000011; // Choose Which Pins to Interrupt (A0, A1)
+    interrupts();         // turn interrupts back on
 }
 
 ISR(PCINT1_vect) {    // Interrupt service routine. Every single PCINT8..14 (=ADC0..5) change
 
-  int state   = ENCODER0 & PINC;
+        int state   = ENCODER0 & PINC;
 
 //  if (encoderState != state) {
 //    encoder.update(state);

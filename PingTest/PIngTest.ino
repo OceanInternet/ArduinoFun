@@ -33,67 +33,68 @@ int total = 0;                  // the running total
 int average = 0;                // the average
 
 void setup() {
-  Serial.begin(115200); // Open serial monitor at 115200 baud to see ping results.
-  pingTimer = millis(); // Start now.
+    Serial.begin(115200); // Open serial monitor at 115200 baud to see ping results.
+    pingTimer = millis(); // Start now.
 
-   lftMotor.setSpeed(0);
-   rgtMotor.setSpeed(0);
-   lftMotor.run(RELEASE);
-   rgtMotor.run(RELEASE);
+    lftMotor.setSpeed(0);
+    rgtMotor.setSpeed(0);
+    lftMotor.run(RELEASE);
+    rgtMotor.run(RELEASE);
 
-   for (int thisReading = 0; thisReading < numReadings; thisReading++) {
-    readings[thisReading] = 0;
-  }
+    for (int thisReading = 0; thisReading < numReadings; thisReading++) {
+        readings[thisReading] = 0;
+    }
 }
 
 void loop() {
-  // Notice how there's no delays in this sketch to allow you to do other processing in-line while doing distance pings.
-  if (millis() >= pingTimer) {   // pingSpeed milliseconds since last ping, do another ping.
-    pingTimer += pingSpeed;      // Set the next ping time.
-    sonar.ping_timer(echoCheck); // Send out the ping, calls "echoCheck" function every 24uS where you can check the ping status.
-  }
-  // Do other stuff here, really. Think of it as multi-tasking.
+    // Notice how there's no delays in this sketch to allow you to do other processing in-line while doing distance pings.
+    if (millis() >= pingTimer) {   // pingSpeed milliseconds since last ping, do another ping.
+        pingTimer += pingSpeed;      // Set the next ping time.
+        sonar.ping_timer(
+                echoCheck); // Send out the ping, calls "echoCheck" function every 24uS where you can check the ping status.
+    }
+    // Do other stuff here, really. Think of it as multi-tasking.
 
-  if(average > 10) {
+    if (average > 10) {
 
-    lftMotor.setSpeed(average);
-    rgtMotor.setSpeed(average);
-  } else {
-    lftMotor.setSpeed(0);
-    rgtMotor.setSpeed(0);
-  }
+        lftMotor.setSpeed(average);
+        rgtMotor.setSpeed(average);
+    } else {
+        lftMotor.setSpeed(0);
+        rgtMotor.setSpeed(0);
+    }
 }
 
 void echoCheck() { // Timer2 interrupt calls this function every 24uS where you can check the ping status.
-  // Don't do anything here!
-  if (sonar.check_timer()) { // This is how you check to see if the ping was received.
-    // Here's where you can add code.
-    addReading(sonar.ping_result / US_ROUNDTRIP_CM);
-    Serial.print("Ping: ");
-    Serial.print(average); // Ping returned, uS result in ping_result, convert to cm with US_ROUNDTRIP_CM.
-    Serial.print("cm");
-    Serial.print("\n");
-  }
-  // Don't do anything here!
+    // Don't do anything here!
+    if (sonar.check_timer()) { // This is how you check to see if the ping was received.
+        // Here's where you can add code.
+        addReading(sonar.ping_result / US_ROUNDTRIP_CM);
+        Serial.print("Ping: ");
+        Serial.print(average); // Ping returned, uS result in ping_result, convert to cm with US_ROUNDTRIP_CM.
+        Serial.print("cm");
+        Serial.print("\n");
+    }
+    // Don't do anything here!
 }
 
 void addReading(int newReading) {
 
-  total = total - readings[readIndex];
-  // read from the sensor:
-  readings[readIndex] = newReading;
-  // add the reading to the total:
-  total = total + readings[readIndex];
-  // advance to the next position in the array:
-  readIndex = readIndex + 1;
+    total = total - readings[readIndex];
+    // read from the sensor:
+    readings[readIndex] = newReading;
+    // add the reading to the total:
+    total = total + readings[readIndex];
+    // advance to the next position in the array:
+    readIndex = readIndex + 1;
 
-  // if we're at the end of the array...
-  if (readIndex >= numReadings) {
-    // ...wrap around to the beginning:
-    readIndex = 0;
-  }
+    // if we're at the end of the array...
+    if (readIndex >= numReadings) {
+        // ...wrap around to the beginning:
+        readIndex = 0;
+    }
 
-  // calculate the average:
-  average = total / numReadings;
+    // calculate the average:
+    average = total / numReadings;
 }
 

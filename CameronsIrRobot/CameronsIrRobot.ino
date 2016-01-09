@@ -5,7 +5,7 @@
 int receiver = 10; // Signal Pin of IR receiver to Arduino Digital Pin 11
 
 /*-----( Declare objects )-----*/
-IRrecv   My_Receiver(receiver); // create instance of 'irrecv'
+IRrecv My_Receiver(receiver); // create instance of 'irrecv'
 IRdecode My_Decoder;            // create instance of 'decode_results'
 
 // AFMotor
@@ -15,8 +15,8 @@ IRdecode My_Decoder;            // create instance of 'decode_results'
 #define RGT        1
 
 AF_DCMotor motors[2] = {
-  AF_DCMotor(LFT_MOTOR),
-  AF_DCMotor(RGT_MOTOR)
+        AF_DCMotor(LFT_MOTOR),
+        AF_DCMotor(RGT_MOTOR)
 };
 
 // tANK
@@ -35,125 +35,125 @@ unsigned long command = TANK_STOP;
 
 void setup() {
 
-  My_Receiver.No_Output();//Turn off any unused IR LED output circuit
-  
-  Serial.begin(9600);
-  Serial.println("Initialise...");
+    My_Receiver.No_Output();//Turn off any unused IR LED output circuit
 
-  tankStop();
+    Serial.begin(9600);
+    Serial.println("Initialise...");
 
-  My_Receiver.enableIRIn(); // Start the receiver
+    tankStop();
+
+    My_Receiver.enableIRIn(); // Start the receiver
 }
 
 void loop() {
-  
-  if (My_Receiver.GetResults(&My_Decoder)) {
 
-    My_Decoder.decode();
-    
-    command = My_Decoder.value;
+    if (My_Receiver.GetResults(&My_Decoder)) {
 
-    translateIR();
+        My_Decoder.decode();
 
-    My_Receiver.resume();
-    
-  } else {
-    
-    tankStop();
-  }
+        command = My_Decoder.value;
+
+        translateIR();
+
+        My_Receiver.resume();
+
+    } else {
+
+        tankStop();
+    }
 }
 
 void translateIR() {
 
-  Serial.println(command, HEX);
-  
-  switch(command) {
+    Serial.println(command, HEX);
 
-    case TANK_STOP:
-      tankStop();
-      break;
-    
-    case TANK_FWD:
-      tankFwd();
-      break;
-    
-    case TANK_REV:
-      tankRev();
-      break;
-    
-    case TANK_LFT:
-      tankLft();
-      break;
-    
-    case TANK_RGT:
-      tankRgt();
-      break;
-    
-    default:
-      tankStop();
-      Serial.println(command, HEX);
-      break;
-  }
+    switch (command) {
+
+        case TANK_STOP:
+            tankStop();
+            break;
+
+        case TANK_FWD:
+            tankFwd();
+            break;
+
+        case TANK_REV:
+            tankRev();
+            break;
+
+        case TANK_LFT:
+            tankLft();
+            break;
+
+        case TANK_RGT:
+            tankRgt();
+            break;
+
+        default:
+            tankStop();
+            Serial.println(command, HEX);
+            break;
+    }
 
 }
 
 void tankFwd() {
 
-  Serial.println(" FORWARD");
-  
-  motors[LFT].run(FORWARD);
-  motors[RGT].run(FORWARD);
-  
-  motors[LFT].setSpeed(DRIVE_SPEED);
-  motors[RGT].setSpeed(DRIVE_SPEED);
+    Serial.println(" FORWARD");
 
-  delay(MOTOR_DRIVE);
+    motors[LFT].run(FORWARD);
+    motors[RGT].run(FORWARD);
+
+    motors[LFT].setSpeed(DRIVE_SPEED);
+    motors[RGT].setSpeed(DRIVE_SPEED);
+
+    delay(MOTOR_DRIVE);
 }
 
 void tankRev() {
 
-  Serial.println(" REVERSE");
+    Serial.println(" REVERSE");
 
-  motors[LFT].run(BACKWARD);
-  motors[RGT].run(BACKWARD);
-  
-  motors[LFT].setSpeed(DRIVE_SPEED);
-  motors[RGT].setSpeed(DRIVE_SPEED);
+    motors[LFT].run(BACKWARD);
+    motors[RGT].run(BACKWARD);
 
-  delay(MOTOR_DRIVE);
+    motors[LFT].setSpeed(DRIVE_SPEED);
+    motors[RGT].setSpeed(DRIVE_SPEED);
+
+    delay(MOTOR_DRIVE);
 }
 
 void tankRgt() {
 
-  Serial.println(" RIGHT");
+    Serial.println(" RIGHT");
 
-  motors[LFT].run(BACKWARD);
-  motors[RGT].run(FORWARD);
-  
-  motors[LFT].setSpeed(TURN_SPEED);
-  motors[RGT].setSpeed(TURN_SPEED);
+    motors[LFT].run(BACKWARD);
+    motors[RGT].run(FORWARD);
 
-  delay(MOTOR_TURN);
+    motors[LFT].setSpeed(TURN_SPEED);
+    motors[RGT].setSpeed(TURN_SPEED);
+
+    delay(MOTOR_TURN);
 }
 
 void tankLft() {
 
-  Serial.println(" LEFT");
-  
-  motors[LFT].run(FORWARD);
-  motors[RGT].run(BACKWARD);
-  
-  motors[LFT].setSpeed(TURN_SPEED);
-  motors[RGT].setSpeed(TURN_SPEED);
+    Serial.println(" LEFT");
 
-  delay(MOTOR_TURN);
+    motors[LFT].run(FORWARD);
+    motors[RGT].run(BACKWARD);
+
+    motors[LFT].setSpeed(TURN_SPEED);
+    motors[RGT].setSpeed(TURN_SPEED);
+
+    delay(MOTOR_TURN);
 }
 
 void tankStop() {
 
-  motors[LFT].run(RELEASE);
-  motors[RGT].run(RELEASE);
+    motors[LFT].run(RELEASE);
+    motors[RGT].run(RELEASE);
 
-  motors[LFT].setSpeed(0);
-  motors[RGT].setSpeed(0);
+    motors[LFT].setSpeed(0);
+    motors[RGT].setSpeed(0);
 }
