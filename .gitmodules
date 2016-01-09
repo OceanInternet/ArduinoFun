@@ -1,0 +1,6 @@
+[submodule "libraries/AFMotor"]
+	path = libraries/AFMotor
+	url = git@github.com:adafruit/Adafruit-Motor-Shield-library.git
+[submodule "libraries/IRLib"]
+	path = libraries/IRLib
+	url = git@github.com:cyborg5/IRLib.git
